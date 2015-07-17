@@ -1,6 +1,6 @@
 {
   "name": "evrythng-scan",
-  "version": "3.1.2",
+  "version": "0.1.0",
   "main": "dist/evrythng-scan.min.js",
   "ignore": [
     "**/.*",
