@@ -31,7 +31,7 @@ The following mobile browsers are currently supported by **evrythng-scan.js**:
 
 QR codes can be used to identify both Products and Thngs (i.e.: unique instances of Products). To enable this 
 all you need to do is to create a Thng or a Product (via our API or Dashboard) and setup a 
-[Redirection](https://dashboard.evrythng.com/documentation/api/redirections). 
+[Redirection](https://dashboard.evrythng.com/developers/apidoc/redirections). 
 This basically creates a short identity for your object and stores it directly in a QR code.
 
 ### Using 1D barcodes
@@ -58,7 +58,7 @@ a Premium account. [Contact us to enable it for your account](https://evrythng.c
 If you do have this feature enabled, you can activate image recognition for any Product through the dashboard by 
 clicking on "Setup image recognition" on the Product page and upload your reference images.
 
-Read more about [Image Recognition Documentation](https://dashboard.evrythng.com/documentation/quickstart/image-recognition).
+Read more about [Image Recognition Documentation](https://dashboard.evrythng.com/developers/quickstart/image-recognition).
 
 
 ## Installation
@@ -133,7 +133,7 @@ Scan.setup({
 });
 
 // app now has a .scan() method that will open up the file browser or image capture
-// process it to ensure best results and will send a recognition request to the [API](https://dashboard.evrythng.com/documentation/api/product-recognition)
+// process it to ensure best results and will send a recognition request to the [API](https://dashboard.evrythng.com/developers/apidoc/product-recognition)
 
 // Promise API
 app.scan().then(function(result) {
@@ -310,8 +310,8 @@ redirect the user to URL defined in the reaction instead of the default one.
 
 ## Documentation
 
-Check the [Image Recognition Quickstart guide](https://dashboard.evrythng.com/documentation/quickstart/image-recognition) 
-and the [Product Recognition Service API](https://dashboard.evrythng.com/documentation/api/product-recognition).
+Check the [Image Recognition Quickstart guide](https://dashboard.evrythng.com/developers/quickstart/image-recognition) 
+and the [Product Recognition Service API](https://dashboard.evrythng.com/developers/apidoc/product-recognition).
 
 ## Related tools
 
