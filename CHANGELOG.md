@@ -1,5 +1,5 @@
-# v0.1.0 (17-07-2015)
+# v1.0.0 (18-08-2015)
 
 ## Features
 
-- **Scan**: _Scathng.js_ was converted to a plugin. This adds Product Recognition capabilities to any EVRYTHNG App.
+- **Scan**: _Scanthng.js_ was converted to a plugin. This adds Product Recognition capabilities to any EVRYTHNG App.
