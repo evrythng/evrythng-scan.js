@@ -81,7 +81,7 @@ See [Usage](#usage) below for more details.
 
 Add the script tag into your HTML page:
 
-    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.1.0.min.js"></script>
+    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.0.min.js"></script>
  
 Or always get the last release:
 
@@ -89,7 +89,7 @@ Or always get the last release:
     
 For HTTPS you need to use:
 
-    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.1.0.min.js"></script>
+    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.0.min.js"></script>
     <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan.min.js"></script>
 
 ## Usage
@@ -178,10 +178,10 @@ $('#scan').on('click', function() {
 ## Options
 
 #### type
-Type: `String` Default: `qrcode`
+Type: `String` Default: `autodetect`
 
 Indicates the type of image that the user is supposed to be scanning. Accepts a string with any of the 
-following values: `qrcode`, `1dbarcode` or `objpic`. `objpic` is the option to indicate for scanning product labels.
+following values: `qrcode`, `1dbarcode`, `objpic`, `datamatrix`, `autodetect`. `objpic` is the option to indicate for scanning product labels. `autodetect` should be passed when the image could be a product, some form of code or both.
 
 #### redirect
 Type: `Boolean` Default: `true`

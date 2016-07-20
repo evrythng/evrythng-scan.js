@@ -1,3 +1,13 @@
+# v1.2.0 (20-07-2016)
+
+## Features
+
+- **Options**: Supports new scanning engine. Added additional scan types `datamatrix` and `autodetect`.
+
+## Bug fixes
+
+- **Format**: Convert image to same format as the original file.
+
 # v1.1.0 (09-06-2016)
 
 ## Changes
