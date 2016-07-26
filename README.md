@@ -1,7 +1,6 @@
 # EVRYTHNG-SCAN.JS (plugin for EVT.js)
 
-**evrythng-scan.js** is an extension plugin to be used with [evrythng.js](https://github.com/evrythng/evrythng.js) or 
-[evrythng-extended.js](https://github.com/evrythng/evrythng-extended.js) JS libraries.
++**evrythng-scan.js** is the Web SDK of our SCANTHNG product. It is an extension plugin to be used with [evrythng.js](https://github.com/evrythng/evrythng.js) or [evrythng-extended.js](https://github.com/evrythng/evrythng-extended.js) JS libraries.
 
 It lets you identify EVRYTHNG Products and Thngs directly from any Web Application. By using a blend of cutting-edge 
 HTML5 and our backend product recognition service, it allows a (mobile) browser to take a `picture` of an object, 
