@@ -1,3 +1,9 @@
+# v1.2.1 (not released yet)
+
+## Bug fixes
+
+- **Prepare options**: Allow to specify imageConversion options on setup.
+
 # v1.2.0 (20-07-2016)
 
 ## Features

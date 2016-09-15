@@ -30,23 +30,50 @@ The following mobile browsers are currently supported by **evrythng-scan.js**:
 
 QR codes can be used to identify both Products and Thngs (i.e.: unique instances of Products). To enable this 
 all you need to do is to create a Thng or a Product (via our API or Dashboard) and setup a 
-[Redirection](https://dashboard.evrythng.com/developers/apidoc/redirections). 
-This basically creates a short identity for your object and stores it directly in a QR code.
-
-### Using 1D barcodes
-
-Usually a 1D barcode identifies a type of product (aka SKU) and not an instance. However, the EVRYTHNG engine 
-supports identifying both Thngs and Products based on 1D barcodes.
-
-To enable this, you need to add an Identifier to your Thng or Product (via our API or Dashboard). In the
- Dashboard, `Name` must match the type of barcode you want to read, currently we support the following types:
+[Redirection](https://dashboard.evrythng.com/developers/apidoc/redirections).
  
-- `ean_13`
-- `ean_8`
-- `upc_8`
-- `upc_13`
+This basically creates a short identity for your object and stores it directly in a QR code.  Therefore scanning this QR Code recognizes this Product, moreover, other type of codes such like Datamatrix can also encodes Url. It the encoded Url is the short identify of an existing entity, it will works the same way.
 
-The `Value` field must match the full number on the barcode, e.g.: 3057640100178.
+### Using other values in 1D/2D barcodes
+
+Usually barcodes identify a type of product (aka SKU) and not an instance. However, the EVRYTHNG Platform
+supports identifying both Thngs and Products based on barcodes.
+
+The barcodes that we support are:
+
+**2D Barcodes:**
+
+- DataMatrix
+- QR Code
+
+**1D Barcodes:**
+
+- code 128
+- code 39
+- Interleaved 2/5
+- EAN-13
+- EAN-8
+- Code 11
+- UPC-A
+- UPC-E
+- Industrial 2/5
+
+To enable this, you need to add an **Identifier to your Thng or Product** (via our API or Dashboard). In the
+Dashboard, the **Name of the indentifer** must match the type of barcode you want to read.  Use any of the keys below for the type of barcode you want to use:
+
+- dm
+- qr_code
+- code_128
+- code_39
+- itf
+- ean_13
+- ean_8
+- code_11
+- upc_a
+- upc_e
+- industr_25
+
+The Value field must match the full value of the barcode, **e.g.: 3057640100178.**
 
 ### Using Image Recognition
 
@@ -80,7 +107,7 @@ See [Usage](#usage) below for more details.
 
 Add the script tag into your HTML page:
 
-    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.0.min.js"></script>
+    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.1.min.js"></script>
  
 Or always get the last release:
 
@@ -88,7 +115,7 @@ Or always get the last release:
     
 For HTTPS you need to use:
 
-    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.0.min.js"></script>
+    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.1.min.js"></script>
     <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan.min.js"></script>
 
 ## Usage
@@ -221,7 +248,8 @@ Sets the timeout for AJAX calls and geolocation, in ms.
 ```javascript
 imageConversion : {
   greyscale: Boolean,
-  resizeTo: Integer
+  resizeTo: Integer,
+  exportQuality: Float
 }
 ```
     
@@ -236,6 +264,11 @@ Type: `Integer` Default: `240` Range: `144..`
     
 Sets the maximum *smaller* dimension of the image (in pixels, automatically resized) to be sent to the server 
 for recognition. The best trade-off between speed and quality is currently around 240.
+
+##### imageConversion.exportQuality
+Type: `Integer` Default: `0.8` Range: `0..1`
+    
+Sets the quality of exported image in relation to the original (1 being the original quality).
 
 #### spinner
 
