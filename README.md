@@ -107,7 +107,7 @@ See [Usage](#usage) below for more details.
 
 Add the script tag into your HTML page:
 
-    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.1.min.js"></script>
+    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.2.min.js"></script>
  
 Or always get the last release:
 
@@ -115,7 +115,7 @@ Or always get the last release:
     
 For HTTPS you need to use:
 
-    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.1.min.js"></script>
+    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.2.min.js"></script>
     <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan.min.js"></script>
 
 ## Usage
@@ -219,10 +219,10 @@ or Thng page. If you have permissions to the Redirector, you can also set custom
 #### threshold
 Type: `Integer` Default: `0` Range: `0..99`
 
-If `type` is set to `objpic`, you can set an additional parameter to decide whether you want the response to contain only the best result or a list of matching results ordered by descending score (which is a percentage).
+You can set an additional parameter to decide whether you want the response to contain only the best result or a list of matching results ordered by descending score (which is a percentage).
 The value specified in the `threshold` parameter is used to specify what deviation from the strongest score other items may be within in order to be included in the response.
 
-Example: image recognition resulted in three matches:
+Example: recognition resulted in three matches:
 
 * Product_1, score: 80
 * Product_2, score: 70
@@ -237,6 +237,9 @@ Depending on the `threshold` value, the output of identify() will be different:
 
 **Note: Setting this option to a positive value will disable automatic redirection and creating scan action if 
 more than one match was found.**
+
+**Note: Barcode, QRCode and Datamatrix matched recognitions always yield scores of 100, meaning they will be at the
+top of the list before image recognition - in case `autodetect' type is chosen.**
 
 #### timeout
 Type: `Integer` Default: `10000`

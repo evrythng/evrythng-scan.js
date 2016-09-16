@@ -1,4 +1,10 @@
-# v1.2.1 (not released yet)
+# v1.2.2 (16-09-2016)
+
+## Bug fixes
+
+- **Options**: Send `threshold` param to server regardless of recognition type.
+
+# v1.2.1 (15-09-2016)
 
 ## Bug fixes
 
