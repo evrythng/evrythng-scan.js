@@ -1,6 +1,6 @@
 {
   "name": "evrythng-scan",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "dist/evrythng-scan.min.js",
   "ignore": [
     "**/.*",
@@ -15,6 +15,6 @@
   "license": "",
   "endpoint": "https://github.com/evrythng/evrythng-scan.js.git",
   "dependencies": {
-    "evrythng": "^3.7.0"
+    "evrythng": "^4.1.0"
   }
 }

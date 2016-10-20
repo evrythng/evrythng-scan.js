@@ -107,7 +107,7 @@ See [Usage](#usage) below for more details.
 
 Add the script tag into your HTML page:
 
-    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.2.min.js"></script>
+    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.3.min.js"></script>
  
 Or always get the last release:
 
@@ -115,7 +115,7 @@ Or always get the last release:
     
 For HTTPS you need to use:
 
-    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.2.min.js"></script>
+    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.3.min.js"></script>
     <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan.min.js"></script>
 
 ## Usage
@@ -150,41 +150,43 @@ EVT.use(EVT.Scan);
 
 #### General
 
-```javascript
-var app = new EVT.App(APP_API_KEY);
+Setup global settings - see more below
 
-// Setup global settings - see more below
+```javascript
 Scan.setup({
   type: 'objpic'
 });
+```
 
-// app now has a .scan() method that will open up the file browser or image capture
-// process it to ensure best results and will send a recognition request to the [API](https://dashboard.evrythng.com/developers/apidoc/product-recognition)
+`app` now has a `scan()` method that will open up the file browser or image capture.
 
-// Promise API
+Process it to ensure best results and send a recognition request to the [API](https://developers.evrythng.com/docs/product-recognition)
+
+
+Use the Promise API
+
+```javascript
 app.scan().then(function(result) {
   // Do something on success
-}, function(error) {
+}).catch(function(error) {
   // Do something on error
 });
+```
 
-// Callback API
-app.scan({}, function(result) {
-  // success callback
-}, function(error) {
-  // error callback
-});
+Use one-off settings
 
-// One-off settings
+```javascript
 app.scan({
   redirect: false,
   threshold: 25
 }).then(...);
+```
 
-// Process base64 image if you already have it (does not launch image capture)
+
+Process a base64 image if you already have it (does not launch image capture)
+
+```javascript
 app.scan('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA...').then(...);
-
-...
 ```
 
 **Note: Due to browser limitations, the `scan` method without supplied image data must be called as a result of 
@@ -335,9 +337,38 @@ If enabled, **evrythng-scan.js** will try to create a Scan Action after identify
 It uses `EVT.settings.geolocation` to decide whether to ask for device location. If user allows this, 
 the precise location will be recorded in this Action, otherwise the Engine will guess a broad location from IP.
 
-If this Scan Action triggered any Reactor rules, the reactions will be added to the output of the `scan()` method.
-Now, if one of those reactions was a redirection and the `redirect` option is set, **evrythng-scan.js** will 
-redirect the user to URL defined in the reaction instead of the default one.
+If this Scan Action triggered any Redirector rules, the reactions will be added to the output of the `scan()` method.
+If one of those reactions was a redirection and the `redirect` option is set, **evrythng-scan.js** will redirect 
+the user to URL defined in the reaction instead of the default one. For convenience, the Scan action will be added 
+to the output of the `scan()` method.
+
+```javascript
+app.scan({
+  createScanAction: true
+}).then(function(result) {
+  console.log(result.scan);
+});
+```
+
+##### Insights
+
+When doing scan actions, the library is measuring the time it took (in milliseconds) to capture, process and decode 
+the image, so it can be used to measure the performance of the scan capability. It also adds a field for the type 
+of scan used, so it can be mapped to the time. These fields are added as private fields into the Scan action custom fields:
+
+```javascript
+{
+  type: "scans",
+  timestamp: 12345678,
+  createdAd: 12345678,
+  customFields: {
+    __evtjs: true,
+    __scanType: "objpic",
+    __timing: 2450
+  }
+}
+```
+
 
 **Note: if there are more than 1 match, the scan is not performed. See [threshold](#threshold) option.**
 

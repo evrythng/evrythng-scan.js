@@ -1,3 +1,10 @@
+# v1.2.3 (20-10-2016)
+
+## Bug fixes
+
+- **Image resize**: send larger images when using `qrcode`, `1dbarcode`, `datamatrix` and `autodetect` types.
+- **Timing**: Adds timing and type information to the created scan action.
+
 # v1.2.2 (16-09-2016)
 
 ## Bug fixes
