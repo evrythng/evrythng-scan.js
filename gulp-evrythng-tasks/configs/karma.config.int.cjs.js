@@ -1,11 +1,13 @@
 const node = require('rollup-plugin-node-resolve')
 const cjs = require('rollup-plugin-commonjs')
+const options = require('../options')
 
-const TESTS = 'test/integration/es6.spec.js'
+// Load UMD integration test file, which will require the src files.
+const TESTS = 'test/integration/umd.spec.js'
 
 module.exports = function (config) {
   config.set({
-    basePath: '../',
+    basePath: process.cwd(),
     frameworks: ['jasmine'],
     files: [TESTS],
     preprocessors: {
@@ -13,12 +15,12 @@ module.exports = function (config) {
     },
     rollupPreprocessor: {
       plugins: [
-        node({ jsnext: true, browser: true }),
+        node({ browser: true }),
         cjs()
       ],
       context: 'window',
       format: 'iife',
-      moduleName: 'EVTScanIntegration'
+      moduleName: `${options.moduleName}Integration`
     },
     reporters: ['dots'],
     browsers: ['Chrome'],

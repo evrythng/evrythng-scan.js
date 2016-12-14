@@ -1,15 +1,14 @@
 const babel = require('rollup-plugin-babel')
 const node = require('rollup-plugin-node-resolve')
-const pkg = require('./package.json')
-const config = require('./evrythng.config')
+const options = require('../options')
 
 /**
  * ES5 + UMD module export
  */
 
 module.exports = {
-  entry: `src/${pkg.name}.js`,
-  dest: `dist/${pkg.name}.js`,
+  entry: `src/${options.name}.js`,
+  dest: `dist/${options.name}.js`,
   format: 'umd',
   plugins: [
     babel({
@@ -17,7 +16,7 @@ module.exports = {
     }),
     node()
   ],
-  moduleName: config.moduleName,
-  external: config.external,
-  globals: config.globals
+  moduleName: options.moduleName,
+  external: options.external,
+  globals: options.globals
 }
