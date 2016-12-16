@@ -1,10 +1,9 @@
 const dependencies = {
-  'evrythng': '../node_modules/evrythng/dist/evrythng.polyfill',
-  'isomorphic-fetch': '../node_modules/whatwg-fetch/fetch'
+  'evrythng': '../node_modules/evrythng/dist/evrythng'
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = paths
+  module.exports = dependencies
 } else {
   let tests = []
   for (let file in window.__karma__.files) {
@@ -27,4 +26,3 @@ if (typeof module !== 'undefined') {
     callback: window.__karma__.start
   })
 }
-

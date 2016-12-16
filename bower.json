@@ -1,9 +1,15 @@
 {
   "name": "evrythng-scan",
-  "description": "Plugin for evrythng.js that adds Barcod, QR code, Image Recognition and OCR scanning to applications.",
+  "description": "Plugin for evrythng.js that adds Barcode, QR code, Image Recognition and OCR scanning to applications.",
   "main": "dist/evrythng-scan.js",
   "authors": [
     "EVRYTHNG Ltd. <support@evrythng.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
   ],
   "license": "Apache-2.0",
   "keywords": [
@@ -11,23 +17,20 @@
     "evt",
     "iot",
     "wot",
-    "internet",
-    "of",
-    "things",
-    "web",
-    "of",
-    "things",
+    "internet of things",
+    "web of things",
     "scanthng",
+    "thngscan",
     "thng-scan"
   ],
   "homepage": "https://github.com/evrythng/evrythng-scan.js",
   "private": true,
   "ignore": [
     "**/.*",
-    "node_modules",
-    "bower_components",
     "test",
-    "tests"
+    "docker",
+    "Dockerfile",
+    "*.js"
   ],
   "dependencies": {
     "evrythng": "^5.0.0"

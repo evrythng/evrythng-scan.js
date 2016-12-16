@@ -2,37 +2,61 @@
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](http://standardjs.com)
 
-Getting started
+## Getting started
 
-Install immutable using npm.
+### Install evrythng-scan.js using npm.
 
-npm install immutable
+```javascript
+npm install evrythng-scan
+```
+
 Then require it into any module.
 
-var Immutable = require('immutable');
-var map1 = Immutable.Map({a:1, b:2, c:3});
-var map2 = map1.set('b', 50);
-map1.get('b'); // 2
-map2.get('b'); // 50
-Browser
+```javascript
+const EVT = require('evrythng')
+const EVTScan = require('evrythng-scan')
 
-To use immutable from a browser, download dist/immutable.min.js or use a CDN such as CDNJS or jsDelivr.
+EVT.use(EVTScan)
+
+/* ... Init app using EVT.js ... */
+
+app.scan().then(match => {
+  app.redirect(match.redirections[0].redirectUrl)
+})
+```
+
+### Browser
+
+To use immutable from a browser, download `dist/evrythng-scan.min.js` or use a CDN such as CDNJS or jsDelivr.
 
 Then, add it as a script tag to your page:
 
-<script src="immutable.min.js"></script>
+```html
+<script src="evrythng.min.js"></script>
+<script src="evrythng-scan.min.js"></script>
 <script>
-    var map1 = Immutable.Map({a:1, b:2, c:3});
-    var map2 = map1.set('b', 50);
-    map1.get('b'); // 2
-    map2.get('b'); // 50
+    EVT.use(EVTScan)
+
+    /* ... Init app using EVT.js ... */
+
+    app.scan().then(match => {
+      app.redirect(match.redirections[0].redirectUrl)
+    })
 </script>
+```
+
 Or use an AMD loader (such as RequireJS):
 
-require(['./immutable.min.js'], function (Immutable) {
-    var map1 = Immutable.Map({a:1, b:2, c:3});
-    var map2 = map1.set('b', 50);
-    map1.get('b'); // 2
-    map2.get('b'); // 50
-});
-If you're using browserify, the immutable npm module also works from the browser.
+```javascript
+require(['./evrythng.min.js', './evrythng-scan.min.js'], (EVT, EVTScan) => {
+    EVT.use(EVTScan)
+
+    /* ... Init app using EVT.js ... */
+
+    app.scan().then(match => {
+      app.redirect(match.redirections[0].redirectUrl)
+    })
+})
+```
+
+If you're using browserify, the `evrythng-scan` npm module also works from the browser.
