@@ -1,3 +1,34 @@
+# v2.0.0 (11-01-2017)
+
+## Breaking changes
+
+- **implicitScans**: `implicitScans` are not created automatically when scanning an image.
+- **Options**: `type`, `timeout`, `threshold`, `redirect`, `createScanAction` and `spinner` options have been removed.
+See [README](https://github.com/evrythng/evrythng-scan.js#spinner) for more information on how to use custom spinner.
+
+## Features
+- **Options**: Use `filter` option to filter out results based on `method` and `type`
+```
+app.scan({
+  filter: {
+    type: 'image'
+  }
+});
+```
+- **Options**: Use `debug` option to include debug information in response.
+- **Options**: Use `perPage` option to specify max number of matches in response.
+- **identify**: `.identify` method is now available on the app and allows to get Thng/product infromation
+associated with provided value:
+```
+app.identify({
+  filter: {
+    type: 'text',
+    value: 'value'
+  }
+});
+```
+- **redirect**: Redirect to url provided `app.redirect('https://evrythng.com')`
+
 # v1.2.3 (20-10-2016)
 
 ## Bug fixes

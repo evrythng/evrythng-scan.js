@@ -30,61 +30,54 @@ The following mobile browsers are currently supported by **evrythng-scan.js**:
 
 QR codes can be used to identify both Products and Thngs (i.e.: unique instances of Products). To enable this 
 all you need to do is to create a Thng or a Product (via our API or Dashboard) and setup a 
-[Redirection](https://dashboard.evrythng.com/developers/apidoc/redirections).
+[Redirection](https://developers.evrythng.com/docs/redirections).
  
 This basically creates a short identity for your object and stores it directly in a QR code.  Therefore scanning this QR Code recognizes this Product, moreover, other type of codes such like Datamatrix can also encodes Url. It the encoded Url is the short identify of an existing entity, it will works the same way.
 
-### Using other values in 1D/2D barcodes
+### Using identifier recognition
+
+#### 1D/2D barcodes
 
 Usually barcodes identify a type of product (aka SKU) and not an instance. However, the EVRYTHNG Platform
 supports identifying both Thngs and Products based on barcodes.
 
-The barcodes that we support are:
-
-**2D Barcodes:**
-
-- DataMatrix
-- QR Code
-
-**1D Barcodes:**
-
-- code 128
-- code 39
-- Interleaved 2/5
-- EAN-13
-- EAN-8
-- Code 11
-- UPC-A
-- UPC-E
-- Industrial 2/5
+Full list of barcodes supported can be seen at [Identifier Recognition](https://developers.evrythng.com/docs/identifier-recognition#section-identify-from-image)
 
 To enable this, you need to add an **Identifier to your Thng or Product** (via our API or Dashboard). In the
 Dashboard, the **Name of the indentifer** must match the type of barcode you want to read.  Use any of the keys below for the type of barcode you want to use:
 
 - dm
 - qr_code
-- code_128
-- code_39
-- itf
-- ean_13
-- ean_8
+- codabar
 - code_11
+- code_39
+- code_93
+- code_128
+- ean_8
+- ean_13
+- industr_25
+- itf
+- rss_14
+- rss_expanded
+- rss_limited
 - upc_a
 - upc_e
-- industr_25
 
 The Value field must match the full value of the barcode, **e.g.: 3057640100178.**
+
+#### Optical character recognition (OCR)
+
+Similar to the barcodes, you can use the OCR capability of our service by adding a `text` identifier 
+to your Thng or Product, where the value could be any sequence of characters, **e.g.: Frrjs9bf6klmek.**
+
+Read more about [Identifier Recognition](https://developers.evrythng.com/docs/identifier-recognition).
 
 ### Using Image Recognition
 
 Image recognition allows you to recognize Products simply by taking a picture of the product itself. 
-Unlike 1D and QR code recognition, image recognition is not enabled as a default in your account and requires 
-a Premium account. [Contact us to enable it for your account](https://evrythng.com/contact-us/).
 
-If you do have this feature enabled, you can activate image recognition for any Product through the dashboard by 
+You can activate image recognition for any Product through the dashboard by 
 clicking on "Setup image recognition" on the Product page and upload your reference images.
-
-Read more about [Image Recognition Documentation](https://dashboard.evrythng.com/developers/quickstart/image-recognition).
 
 
 ## Installation
@@ -107,7 +100,7 @@ See [Usage](#usage) below for more details.
 
 Add the script tag into your HTML page:
 
-    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.3.min.js"></script>
+    <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-2.0.0.min.js"></script>
  
 Or always get the last release:
 
@@ -115,7 +108,7 @@ Or always get the last release:
     
 For HTTPS you need to use:
 
-    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-1.2.3.min.js"></script>
+    <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan-2.0.0.min.js"></script>
     <script src="//d10ka0m22z5ju5.cloudfront.net/toolkit/evrythng-js-sdk/evrythng-scan.min.js"></script>
 
 ## Usage
@@ -154,13 +147,17 @@ Setup global settings - see more below
 
 ```javascript
 Scan.setup({
-  type: 'objpic'
+  filter: {
+    method: 'ocr'
+  }
 });
 ```
 
-`app` now has a `scan()` method that will open up the file browser or image capture.
+`app` now has `scan()`, `identify()` and `redirect()` methods. `scan()` will open up the file browser or image capture.
 
 Process it to ensure best results and send a recognition request to the [API](https://developers.evrythng.com/docs/product-recognition)
+
+Additionally, you can use `.identify()` method to submit 'corrected' value and read the data associated with it.
 
 
 Use the Promise API
@@ -177,8 +174,7 @@ Use one-off settings
 
 ```javascript
 app.scan({
-  redirect: false,
-  threshold: 25
+  createAnonymousUser: true
 }).then(...);
 ```
 
@@ -203,52 +199,96 @@ $('#scan').on('click', function() {
 });
 ```
 
+#### Spinner
+
+Using [spin.js](http://spin.js.org)
+
+```javascript
+var spinner = new Spinner().spin(document.getElementById('spinner')); // use your custom id
+
+app.scan()
+  .then(matches => {
+    console.log(matches);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+  .then(() => {
+    spinner.stop();
+  });
+```
+
 ## Options
 
-#### type
-Type: `String` Default: `autodetect`
+### filter
+Type: `String` or `Object`
 
-Indicates the type of image that the user is supposed to be scanning. Accepts a string with any of the 
-following values: `qrcode`, `1dbarcode`, `objpic`, `datamatrix`, `autodetect`. `objpic` is the option to indicate for scanning product labels. `autodetect` should be passed when the image could be a product, some form of code or both.
+There are different identifier types available for each scanning method. You can easily filter out
+matches based on `method` or `type`. If `filter` option is not provided, both detected automatically.
+Results are always ordered by score (highest first).
 
-#### redirect
-Type: `Boolean` Default: `true`
+```javascript
+filter: {
+  method: '2d' // this includes dm and qr_code types
+}
+```
 
-Indicates whether the library should automatically redirect user to the redirection URL associated with 
-the scanned Thng or Product. This URL can be set in the [dashboard](https://dashboard.evrythng.com) on any Product 
-or Thng page. If you have permissions to the Redirector, you can also set custom redirection rules.
+or
 
-#### threshold
-Type: `Integer` Default: `0` Range: `0..99`
+```javascript
+filter: 'method=2d' // this includes dm and qr_code types
+```
 
-You can set an additional parameter to decide whether you want the response to contain only the best result or a list of matching results ordered by descending score (which is a percentage).
-The value specified in the `threshold` parameter is used to specify what deviation from the strongest score other items may be within in order to be included in the response.
+Multiple items:
 
-Example: recognition resulted in three matches:
+```javascript
+filter: {
+  method: ['ocr', 'ir'] // this includes text and image types
+}
+```
 
-* Product_1, score: 80
-* Product_2, score: 70
-* Product_3, score: 50
-* Product_4, score: 10
+or
 
-Depending on the `threshold` value, the output of identify() will be different:
-* `threshold = 0` will return a single match, `Product1` object
-* `threshold = 5` will return a list with only the first match: [`Product1`]
-* `threshold = 10` will return a list of matches in the `data` field: `[ Product1, Product2 ]`
-* `threshold = 50` will return a list of matches in the `data` field: `[ Product1, Product2, Product3 ]`
+```javascript
+filter: 'method=ocr,ir' // this includes text and image types
+```
 
-**Note: Setting this option to a positive value will disable automatic redirection and creating scan action if 
-more than one match was found.**
+#### filter.method
+Type: `String`
 
-**Note: Barcode, QRCode and Datamatrix matched recognitions always yield scores of 100, meaning they will be at the
-top of the list before image recognition - in case `autodetect' type is chosen.**
+Available methods: `ocr`, `ir`, `1d` or `2d`.
 
-#### timeout
-Type: `Integer` Default: `10000`
+```javascript
+filter: {
+  method: 'ocr'
+}
+```
 
-Sets the timeout for AJAX calls and geolocation, in ms.
+####filter.type
+Type: `String`
 
-#### imageConversion
+Type of recognition `text`, `image`, `qr_code`, etc.
+Full list of types available at [Identifier Recognition](https://developers.evrythng.com/docs/identifier-recognition#section-types-of-request)
+
+```javascript
+filter: {
+  type: 'text'
+}
+```
+
+**NOTE:** When using `filter.type`, `filter.method` is irrelevant. When using both, `type` must match `method`.
+
+### debug
+Type: `Boolean` Default: `false`
+
+Include debug information in response (`timings` and `vertices`).
+
+### perPage
+Type: `Integer`
+
+Max number of matches in response. To only get the best result, use `perPage: 1`.
+
+### imageConversion
 
 ```javascript
 imageConversion : {
@@ -257,71 +297,38 @@ imageConversion : {
   exportQuality: Float
 }
 ```
-    
-##### imageConversion.greyscale
+
+#### imageConversion.greyscale
 Type: `Boolean` Default: `true`
-    
+
 Indicates whether the library should send a black and white version of the scanned image for identification.
 If you do not need to distinguish similar images with different colors, this yields better and faster results.
 
-##### imageConversion.resizeTo
-Type: `Integer` Default: `240` Range: `144..`
-    
-Sets the maximum *smaller* dimension of the image (in pixels, automatically resized) to be sent to the server 
-for recognition. The best trade-off between speed and quality is currently around 240.
+#### imageConversion.resizeTo
+Type: `Integer` Default: `600` Range: `144..`
 
-##### imageConversion.exportQuality
+Sets the maximum *smaller* dimension of the image (in pixels, automatically resized) to be sent to the server 
+for recognition. The best trade-off between speed and quality is currently around 600.
+
+#### imageConversion.exportQuality
 Type: `Integer` Default: `0.8` Range: `0..1`
-    
+
 Sets the quality of exported image in relation to the original (1 being the original quality).
 
-#### spinner
-
-*evrythng-scan.js** uses [spin.js](http://fgnass.github.io/spin.js/) library to display a configurable spinner
-while processing the scan recognition.
-
-```javascript
-spinner: {
-  enabled: true,
-  appendTo: document.getElementsByTagName('body')[0],
-  options: {
-    length: 30,
-    radius: 48,
-    hwaccel: true
-  }
-}
-```
-
-##### spinner.enabled
-Type: `Boolean` Default: `true`
-
-Indicates whether to display the built-in spinner. Set to `false` to disable it.
-
-##### spinner.appendTo
-Type: `DOM Element` Default: `document.getElementsByTagName('body')[0]`
-
-Reference to DOM element our spinner will be attached to. If invalid or null, spinner will be attached to the body.
-
-##### spinner.options
-Type: `Object` Default: `{ length: 30, radius: 48, hwaccel: true }`
-
-Spinner options as described in [`spin.js` documentation](http://fgnass.github.io/spin.js/).
-
-#### createAnonymousUser
+### createAnonymousUser
 Type: `Boolean` Default: `false`
 
 If enabled, **evrythng-scan.js** will try to create an Anonymous User and save it in local storage 
 (falling back to cookies) for subsequent requests. For convenience, this User will be added to the 
-output of the `scan()` method. In these scenarios, the item recognized is also converted into a resource. E.g.:
+output of the `scan()` method. In these scenarios, the item recognized is also converted into a resource.
 
 ```javascript
 app.scan({
+  filter: 'method=ocr',
   createAnonymousUser: true
-}).then(function(result) {
-  console.log(result.user);
-  console.log(result.product);
-  
-  return result.product.property().read();
+}).then(matches => {
+  console.log(matches[0].user);
+  console.log(matches[0].results[0].product);
 });
 ```
 
@@ -330,54 +337,81 @@ them to create an account or login with Facebook in our "experience" app. Obviou
 not as "valuable" as full App Users, because we don't store their personal details, but in some situations 
 that's good enough.
 
-#### createScanAction
-Type: `Boolean` Default: `false`
+## Scenarios
 
-If enabled, **evrythng-scan.js** will try to create a Scan Action after identifying the Thng or Product. 
-It uses `EVT.settings.geolocation` to decide whether to ask for device location. If user allows this, 
-the precise location will be recorded in this Action, otherwise the Engine will guess a broad location from IP.
-
-If this Scan Action triggered any Redirector rules, the reactions will be added to the output of the `scan()` method.
-If one of those reactions was a redirection and the `redirect` option is set, **evrythng-scan.js** will redirect 
-the user to URL defined in the reaction instead of the default one. For convenience, the Scan action will be added 
-to the output of the `scan()` method.
+Recognize the image using the Image Recognition service, read debug information
 
 ```javascript
 app.scan({
-  createScanAction: true
-}).then(function(result) {
-  console.log(result.scan);
+  filter: {
+    method: 'ir'
+  },
+  debug: true
+}).then(matches => {
+  console.log(matches[0].meta.debug);
 });
 ```
 
-##### Insights
-
-When doing scan actions, the library is measuring the time it took (in milliseconds) to capture, process and decode 
-the image, so it can be used to measure the performance of the scan capability. It also adds a field for the type 
-of scan used, so it can be mapped to the time. These fields are added as private fields into the Scan action custom fields:
+Recognize the image, redirect to url (using redirections short url)
 
 ```javascript
-{
-  type: "scans",
-  timestamp: 12345678,
-  createdAd: 12345678,
-  customFields: {
-    __evtjs: true,
-    __scanType: "objpic",
-    __timing: 2450
-  }
-}
+app.scan({
+  filter: {
+    method: 'ocr'
+  },
+  perPage: 5
+}).then(matches => {
+  let result = matches[0].results[0];
+  return app.redirect(result.redirections[0]); // this will create an implicit scan
+});
 ```
 
+Recoginize the image, then create a scan action and redirect to url (using reaction url). **Anonymous user is required!**
 
-**Note: if there are more than 1 match, the scan is not performed. See [threshold](#threshold) option.**
+```javascript
+app.scan({
+  filter: {
+    method: 'ocr'
+  },
+  createAnonymousUser: true
+}).then(matches => {
+  let result = matches[0].results[0];
+
+  // Action made as a User
+  return result.thng.action('scans').create();
+}).then(action => {
+  console.log(action);
+  return app.redirect(action.reactions[0].redirectUrl);
+});
+```
+
+Try to recognize the image, correct the value returned and read the match again
+
+```javascript
+app.scan({
+  filter: {
+    method: 'ocr'
+  },
+}).then(matches => {
+  let meta = matches[0].meta;
+
+  return app.identify({
+    filter: {
+      value: meta.value + '4', // put correct value
+      type: meta.type
+    }
+  });
+}).then(matches => {
+  let result = matches[0].results[0];
+  console.log(result);
+});
+```
 
 ---
 
 ## Documentation
 
-Check the [Image Recognition Quickstart guide](https://dashboard.evrythng.com/developers/quickstart/image-recognition) 
-and the [Product Recognition Service API](https://dashboard.evrythng.com/developers/apidoc/product-recognition).
+Check the [Identifier Recognition Service API](https://developers.evrythng.com/docs/identifier-recognition).
 
 ## Related tools
 
