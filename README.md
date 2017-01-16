@@ -102,7 +102,7 @@ Add the script tag into your HTML page:
 
     <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan-2.0.0.min.js"></script>
  
-Or always get the last release:
+Or always get the last release (warning, new releases might break your code!):
 
     <script src="//cdn.evrythng.net/toolkit/evrythng-js-sdk/evrythng-scan.min.js"></script>
     
