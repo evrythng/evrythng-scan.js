@@ -8,9 +8,7 @@
     "lint": "gulp lint",
     "build": "gulp build",
     "test": "gulp test",
-    "prepublish": "npm run build",
-    "docker:build": "docker build -t evrythng-scan.js .",
-    "docker:test": "docker run --security-opt seccomp:unconfined evrythng-scan.js docker/test.sh"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

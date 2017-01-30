@@ -27,7 +27,7 @@ app.scan().then(match => {
 
 ### Browser
 
-To use immutable from a browser, download `dist/evrythng-scan.min.js` or use a CDN such as CDNJS or jsDelivr.
+To use evrythng-scan from a browser, download `dist/evrythng-scan.min.js` or use a CDN such as CDNJS or jsDelivr.
 
 Then, add it as a script tag to your page:
 
